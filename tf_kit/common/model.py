@@ -1,37 +1,10 @@
-# -*- coding: utf-8 -*-
-#
-# Author: Synrey Yee
-#
-# Created at: 03/24/2018
-#
-# Description: Segmentation models
-#
-# Last Modified at: 05/21/2018, by: Synrey Yee
-
-'''
-==========================================================================
-  Copyright 2018 Xingyu Yi (Alias: Synrey Yee) All Rights Reserved.
-
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
-
-      http://www.apache.org/licenses/LICENSE-2.0
-
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
-==========================================================================
-'''
+# _*_ coding: utf-8 _*_
 
 from __future__ import absolute_import
 from __future__ import print_function
 
 from . import model_helper
 from . import data_iterator
-
 import tensorflow as tf
 
 
@@ -243,14 +216,12 @@ class BasicModel(object):
 
     return decode_tags
 
-
   def _calculate_right(self):
     decode_tags = self._decode()
     sign_tensor = tf.equal(decode_tags, self.iterator.label)
     right_count = tf.cast(sign_tensor, tf.int32)
 
     return right_count
-
 
   def train(self, sess):
     assert self.mode == tf.contrib.learn.ModeKeys.TRAIN
@@ -259,7 +230,6 @@ class BasicModel(object):
                      self.global_step,
                      self.batch_size])
 
-
   def eval(self, sess):
     assert self.mode == tf.contrib.learn.ModeKeys.EVAL
     return sess.run([self.char_count,
@@ -267,17 +237,15 @@ class BasicModel(object):
                      self.batch_size,
                      self.iterator.sequence_length])
 
-
   def infer(self, sess):
     assert self.mode == tf.contrib.learn.ModeKeys.INFER
     return sess.run([self.iterator.text_raw,
                     self.decode_tags,
                     self.iterator.sequence_length])
-    
+
 
 class CnnCrfModel(BasicModel):
-  """Bi-LSTM + CNN + CRF"""
-  
+  """ Bi-LSTM + CNN + CRF """
   def _middle_layer(self, encoder_outputs, hparams, dtype=tf.float32):
     # CNN
     return self._cnn_layer(encoder_outputs, hparams, dtype)

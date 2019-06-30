@@ -1,35 +1,10 @@
-# -*- coding: utf-8 -*-
-#
-# Author: Synrey Yee
-#
-# Created at: 05/20/2018
-#
-# Description: The PRF scoring script used for evaluation
-#
-# Last Modified at: 05/20/2018, by: Synrey Yee
-
-'''
-==========================================================================
-  Copyright 2018 Xingyu Yi (Alias: Synrey Yee) All Rights Reserved.
-
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
-
-      http://www.apache.org/licenses/LICENSE-2.0
-
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
-==========================================================================
-'''
+# _*_ coding: utf-8 _*_
 
 from __future__ import print_function
 from __future__ import division
 
 import codecs
+
 
 def get_prf_score(test_list, gold_file):
   e = 0 # wrong words number
@@ -40,7 +15,7 @@ def get_prf_score(test_list, gold_file):
   assert type(test_list) == list
   test_raw = []
   for line in test_list:
-    sent =  line.strip().split()
+    sent = line.strip().split()
     if sent:
       test_raw.append(sent)
 
@@ -70,6 +45,7 @@ def get_prf_score(test_list, gold_file):
       else:
         lg = len(gword)
         lt = len(tword)
+
         while lg != lt:
           try:
             if lg < lt:
@@ -98,12 +74,12 @@ def get_prf_score(test_list, gold_file):
   F = 2 * precision * recall / (precision + recall)
   error_rate = e / N
 
-  print ("Correct words: %d"%c)
-  print ("Error words: %d"%e)
-  print ("Gold words: %d\n"%N)
-  print ("precision: %f"%precision)
-  print ("recall: %f"%recall)
-  print ("F-Value: %f"%F)
-  print ("error_rate: %f"%error_rate)
+  print("Correct words: %d"%c)
+  print("Error words: %d"%e)
+  print("Gold words: %d\n"%N)
+  print("precision: %f"%precision)
+  print("recall: %f"%recall)
+  print("F-Value: %f"%F)
+  print("error_rate: %f"%error_rate)
 
   return F
