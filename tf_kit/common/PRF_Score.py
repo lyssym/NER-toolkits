@@ -1,12 +1,5 @@
-#-*- coding: utf-8 -*-
+# _*_ coding: utf-8 _*_
 
-# Perceptron word segment for Chinese sentences
-# 
-# File usage:
-# Results score. PRF
-# 
-# Author:
-# Synrey Yee
 
 from __future__ import division
 from __future__ import print_function

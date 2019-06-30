@@ -1,43 +1,13 @@
-# -*- coding: utf-8 -*-
-#
-# Author: Synrey Yee
-#
-# Created at: 03/24/2018
-#
-# Description: The iterator of training and inference data
-#
-# Last Modified at: 04/03/2018, by: Synrey Yee
-
-'''
-==========================================================================
-  Copyright 2018 Xingyu Yi (Alias: Synrey Yee) All Rights Reserved.
-
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
-
-      http://www.apache.org/licenses/LICENSE-2.0
-
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
-==========================================================================
-'''
+# _*_ coding: utf-8 _*_
 
 from __future__ import print_function
-
 from collections import namedtuple
-
 import tensorflow as tf
 
 __all__ = ["BatchedInput", "get_iterator", "get_infer_iterator"]
 
 
-class BatchedInput(
-    namedtuple("BatchedInput",
-               ("initializer", "text", "label",
+class BatchedInput(namedtuple("BatchedInput",("initializer", "text", "label",
                 "text_raw", "sequence_length"))):
   pass
 
@@ -46,8 +16,7 @@ def get_infer_iterator(src_dataset,
                        vocab_table,
                        index_table,
                        batch_size,
-                       max_len = None):
-
+                       max_len=None):
   src_dataset = src_dataset.map(lambda src : tf.string_split([src]).values)
 
   if max_len:
@@ -101,6 +70,7 @@ def get_iterator(txt_dataset,
 
   if not output_buffer_size:
     output_buffer_size = batch_size * 1000
+
   txt_lb_dataset = tf.data.Dataset.zip((txt_dataset, lb_dataset))
   txt_lb_dataset = txt_lb_dataset.shuffle(output_buffer_size)
 
@@ -128,8 +98,7 @@ def get_iterator(txt_dataset,
   
   # Add in sequence lengths.
   txt_lb_dataset = txt_lb_dataset.map(
-      lambda txt, lb : (
-          txt, lb, tf.size(txt)),
+      lambda txt, lb : (txt, lb, tf.size(txt)),
       num_parallel_calls = num_parallel_calls).prefetch(output_buffer_size)
 
   # Bucket by sequence length (buckets for lengths 0-9, 10-19, ...)
@@ -182,6 +151,7 @@ def get_iterator(txt_dataset,
     batched_dataset = batching_func(txt_lb_dataset)
   batched_iter = batched_dataset.make_initializable_iterator()
   (txt_ids, lb_ids, seq_len) = batched_iter.get_next()
+
   return BatchedInput(
       initializer = batched_iter.initializer,
       text = txt_ids,

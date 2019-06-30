@@ -1,39 +1,11 @@
-# -*- coding: utf-8 -*-
-#
-# Author: Synrey Yee
-#
-# Created at: 03/21/2018
-#
-# Description: A neural network tool for Chinese word segmentation
-#
-# Last Modified at: 05/21/2018, by: Synrey Yee
-
-'''
-==========================================================================
-  Copyright 2018 Xingyu Yi (Alias: Synrey Yee) All Rights Reserved.
-
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
-
-      http://www.apache.org/licenses/LICENSE-2.0
-
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
-==========================================================================
-'''
+# _*_ coding: utf-8 _*_
 
 from __future__ import absolute_import
 from __future__ import print_function
 
-from . import main_body
+from . import core
 from . import model as model_r
-
 import tensorflow as tf
-
 import argparse
 import sys
 import os
@@ -227,8 +199,8 @@ def main(unused_argv):
     if not ckpt:
       ckpt = tf.train.latest_checkpoint(out_dir)
 
-    main_body.inference(ckpt, FLAGS.inference_input_file,
-                 trans_file, hparams, model_creator)
+    core.inference(ckpt, FLAGS.inference_input_file,
+                   trans_file, hparams, model_creator)
   else:
     # Train
     check_corpora(FLAGS.train_prefix, FLAGS.eval_prefix)
@@ -240,7 +212,7 @@ def main(unused_argv):
     tf.gfile.MakeDirs(best_metric_dir)
 
     print_hparams(hparams)
-    main_body.train(hparams, model_creator)
+    core.train(hparams, model_creator)
 
 
 if __name__ == '__main__':
