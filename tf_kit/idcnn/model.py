@@ -13,7 +13,6 @@ from .data_utils import create_input, iobes_iob
 
 class Model(object):
     def __init__(self, config, is_train=True):
-
         self.config = config
         self.is_train = is_train
 
@@ -32,7 +31,6 @@ class Model(object):
         self.initializer = initializers.xavier_initializer()
 
         # add placeholders for the model
-
         self.char_inputs = tf.placeholder(dtype=tf.int32,
                                           shape=[None, None],
                                           name="ChatInputs")
@@ -44,8 +42,7 @@ class Model(object):
                                       shape=[None, None],
                                       name="Targets")
         # dropout keep prob
-        self.dropout = tf.placeholder(dtype=tf.float32,
-                                      name="Dropout")
+        self.dropout = tf.placeholder(dtype=tf.float32, name="Dropout")
 
         used = tf.sign(tf.abs(self.char_inputs))
         length = tf.reduce_sum(used, reduction_indices=1)
@@ -53,20 +50,14 @@ class Model(object):
         self.batch_size = tf.shape(self.char_inputs)[0]
         self.num_steps = tf.shape(self.char_inputs)[-1]
 
-        # Add model type by crownpku， bilstm or idcnn
+        # Add model type by crownpku, bilstm or idcnn
         self.model_type = config['model_type']
         # parameters for idcnn
         self.layers = [
-            {
-                'dilation': 1
-            },
-            {
-                'dilation': 1
-            },
-            {
-                'dilation': 2
-            },
-        ]
+            {'dilation': 1},
+            {'dilation': 1},
+            {'dilation': 2},]
+
         self.filter_width = 3
         self.num_filter = self.lstm_dim
         self.embedding_dim = self.char_dim + self.seg_dim
@@ -135,6 +126,7 @@ class Model(object):
                 shape=[self.num_chars, self.char_dim],
                 initializer=self.initializer)
             embedding.append(tf.nn.embedding_lookup(self.char_lookup, char_inputs))
+
             if config["seg_dim"]:
                 with tf.variable_scope("seg_embedding"), tf.device('/cpu:0'):
                     self.seg_lookup = tf.get_variable(
@@ -338,10 +330,10 @@ class Model(object):
         :return: batch result, loss of the batch or logits
         """
         feed_dict = self.create_feed_dict(is_train, batch)
+
         if is_train:
             global_step, loss, _ = sess.run(
-                [self.global_step, self.loss, self.train_op],
-                feed_dict)
+                [self.global_step, self.loss, self.train_op], feed_dict)
             return global_step, loss
         else:
             lengths, logits = sess.run([self.lengths, self.logits], feed_dict)
