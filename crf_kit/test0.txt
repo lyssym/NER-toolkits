@@ -1,0 +1,42 @@
+曾 l
+因 u
+支 B
+气 B
+管 B
+肺 B
+炎 D
+收 v
+入 n
+院 n
+
+张 z
+某 z
+患 v
+脑 B
+血 P
+栓 P
+十 m
+余 m
+年 m
+
+张 z
+某 z
+患 v
+风 B
+湿 P
+性 P
+心 B
+脏 B
+瓣 B
+膜 B
+病 D
+
+现 t
+在 t
+转 v
+膝 B
+关 B
+节 B
+炎 P
+未 vn
+愈 vn
